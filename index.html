@@ -688,7 +688,7 @@
       h1 {
         margin-bottom: 28px;
         color: #13352f;
-        font-size: clamp(3.9rem, 5.2vw, 4.95rem);
+        font-size: clamp(3.42rem, 4.5vw, 4.25rem);
         line-height: 1.08;
         font-weight: 950;
       }
@@ -905,27 +905,6 @@
         object-fit: cover;
       }
 
-      .preview-label {
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        z-index: 5;
-        margin: 0;
-        color: rgba(16, 40, 35, .48);
-        font-size: .74rem;
-        line-height: 1;
-        font-weight: 850;
-        white-space: nowrap;
-        text-shadow: 0 1px 14px rgba(255, 255, 255, .86);
-        transform: translateX(-50%);
-      }
-
-      .preview-label-widget {
-        top: 14px;
-        color: rgba(255, 255, 255, .82);
-        text-shadow: 0 1px 12px rgba(5, 20, 30, .68);
-      }
-
       .real-use-card-notification {
         top: 76px;
         left: -42px;
@@ -941,6 +920,10 @@
         width: 238px;
         height: 380px;
         transform: rotate(2deg);
+      }
+
+      .real-use-card-widget img {
+        object-position: top center;
       }
 
       .preview-track {
@@ -1212,7 +1195,7 @@
         }
 
         h1 {
-          font-size: clamp(3.35rem, 4.6vw, 4.35rem);
+          font-size: clamp(3.05rem, 4.1vw, 3.9rem);
         }
       }
     }
@@ -1348,11 +1331,9 @@
         </div>
         <div class="preview-showcase">
           <figure class="real-use-card real-use-card-notification">
-            <figcaption class="preview-label">실제 시스템 알림창</figcaption>
             <img src="assets/device_previews/notification_shade_current.png" alt="실기기 알림창에 표시된 했어? 체크인 알림" width="720" height="673" loading="lazy">
           </figure>
           <div class="preview-carousel" data-preview-carousel data-parallax-phone>
-            <p class="preview-label">실제 앱 화면</p>
             <div class="preview-track">
               <figure class="desktop-phone preview-slide is-active">
                 <img src="assets/device_previews/01_tutorial.png" alt="했어? 튜토리얼 화면" width="1080" height="2340">
@@ -1387,7 +1368,6 @@
             </div>
           </div>
           <figure class="real-use-card real-use-card-widget">
-            <figcaption class="preview-label preview-label-widget">실제 위젯 화면</figcaption>
             <img src="assets/device_previews/home_widgets_current.png" alt="실기기 홈 화면에 배치된 했어? 위젯" width="720" height="1227" loading="lazy">
           </figure>
         </div>
@@ -1397,7 +1377,7 @@
         <div class="section-intro">
           <span class="section-kicker">지원 / 자주 묻는 질문</span>
           <h2 id="home-faq-title">궁금한 점만 빠르게</h2>
-          <p>앱을 설치하기 전에 필요한 핵심 질문만 짧게 정리했습니다.</p>
+          <p>처음 쓰기 전에 궁금할 만한 내용을 짧게 모았어요.</p>
         </div>
         <div class="home-faq-list">
           <details class="home-faq-card" open data-animate>
