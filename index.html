@@ -1,0 +1,1569 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>했어? | 체크인 알람 앱</title>
+  <meta name="description" content="했어?는 매일 작은 질문으로 나를 돌아보게 하는 체크인 알람 앱입니다. 질문, 답변, 기록은 기기 안에서 가볍게 관리됩니다.">
+  <meta property="og:title" content="했어? | 체크인 알람 앱">
+  <meta property="og:description" content="작은 질문이 하루를 바꾸도록 돕는 체크인 알람 앱, 했어?를 만나보세요.">
+  <meta name="theme-color" content="#edf9f1">
+  <link rel="icon" href="assets/brand/app_icon_master.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #102823;
+      --ink-soft: #40564f;
+      --muted: #788882;
+      --line: #e4ece6;
+      --cream: #fffdf6;
+      --mint: #edf9f1;
+      --green: #148368;
+      --green-strong: #0f725d;
+      --shadow: 0 18px 46px rgba(20, 51, 45, .11);
+      --desktop-max: 1280px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      min-width: 320px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #f8f5ec;
+      letter-spacing: 0;
+    }
+
+    a { color: inherit; }
+    img { display: block; max-width: 100%; height: auto; }
+    h1, h2, h3, p { margin-top: 0; word-break: keep-all; overflow-wrap: break-word; }
+
+    .desktop-nav,
+    .desktop-only,
+    .desktop-hero-art,
+    .desktop-store-note,
+    .desktop-preview,
+    .home-faq,
+    .final-cta,
+    .feature-number {
+      display: none;
+    }
+
+    .mobile-shell {
+      width: min(100%, 390px);
+      margin: 0 auto;
+      padding: 14px 10px 18px;
+    }
+
+    .phone-page {
+      overflow: hidden;
+      border: 1px solid rgba(16, 40, 35, .08);
+      border-radius: 18px;
+      background: var(--cream);
+      box-shadow: 0 20px 56px rgba(16, 40, 35, .12);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 590px;
+      padding: 24px 28px 0;
+      overflow: visible;
+      background:
+        radial-gradient(circle at 82% 35%, rgba(181, 235, 216, .58), transparent 44px),
+        linear-gradient(180deg, #fffef8 0%, #fffef8 53%, #e9f8ef 100%);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      right: -26px;
+      bottom: 100px;
+      width: 160px;
+      height: 72px;
+      border-radius: 999px;
+      background: rgba(203, 239, 225, .72);
+      box-shadow: -78px 24px 0 rgba(213, 244, 232, .76);
+    }
+
+    .hero::after {
+      left: -54px;
+      right: -42px;
+      bottom: -24px;
+      height: 160px;
+      border-radius: 48% 52% 0 0;
+      background:
+        radial-gradient(circle at 13% 78%, rgba(191, 226, 166, .36), transparent 34px),
+        linear-gradient(180deg, rgba(218, 244, 225, .78), rgba(233, 248, 239, .95));
+    }
+
+    .topbar,
+    .hero-copy-block,
+    .store-row,
+    .feature-card,
+    .app-card {
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 100;
+      margin-bottom: 48px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 1.02rem;
+      font-weight: 900;
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      box-shadow: 0 8px 18px rgba(20, 131, 104, .14);
+    }
+
+    .menu {
+      position: relative;
+      z-index: 10;
+    }
+
+    .menu summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .86);
+      box-shadow: 0 8px 20px rgba(16, 40, 35, .08);
+      color: var(--ink-soft);
+      font-size: .82rem;
+      font-weight: 850;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .menu summary::-webkit-details-marker { display: none; }
+
+    .menu-lines {
+      width: 13px;
+      height: 10px;
+      display: inline-grid;
+      gap: 3px;
+    }
+
+    .menu-lines span {
+      height: 1.5px;
+      border-radius: 99px;
+      background: var(--ink-soft);
+    }
+
+    .menu-panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      z-index: 120;
+      width: 176px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, .97);
+      box-shadow: 0 14px 30px rgba(16, 40, 35, .13);
+    }
+
+    .menu-panel a {
+      display: block;
+      padding: 12px 13px;
+      border-radius: 10px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: .86rem;
+      font-weight: 800;
+    }
+
+    .menu-panel a:hover { background: var(--mint); color: var(--green); }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 16px;
+      color: #112a25;
+      font-size: 2rem;
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    h1 span { display: block; }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 22px;
+      color: var(--ink-soft);
+      font-size: .98rem;
+      line-height: 1.72;
+      font-weight: 720;
+    }
+
+    .store-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .store-link {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border: 1px solid #dbe5de;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .9);
+      box-shadow: 0 9px 19px rgba(16, 40, 35, .08);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: .82rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .store-link[aria-disabled="true"] {
+      color: #4d5f59;
+      cursor: not-allowed;
+    }
+
+    .store-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 6px;
+      background: var(--ink);
+      color: #fff;
+      line-height: 1;
+    }
+
+    .store-icon svg {
+      display: block;
+      width: 15px;
+      height: 15px;
+    }
+
+    .store-icon-google {
+      border: 1px solid rgba(16, 40, 35, .11);
+      background: #fff;
+    }
+
+    .store-icon-google svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .store-icon-apple {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .store-icon-apple svg {
+      fill: currentColor;
+    }
+
+    .store-icon-sprite {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .hero-mascot {
+      position: absolute;
+      z-index: 1;
+      left: 58px;
+      bottom: 24px;
+      width: 235px;
+      filter: drop-shadow(0 20px 22px rgba(16, 40, 35, .15));
+    }
+
+    .sprout {
+      position: absolute;
+      z-index: 1;
+      bottom: 36px;
+      width: 34px;
+      height: 44px;
+      border-radius: 0 24px 24px 24px;
+      border-left: 3px solid rgba(129, 174, 117, .46);
+    }
+
+    .sprout::before,
+    .sprout::after {
+      content: "";
+      position: absolute;
+      bottom: 5px;
+      width: 22px;
+      height: 14px;
+      border-radius: 999px 999px 0 999px;
+      background: rgba(185, 213, 151, .58);
+    }
+
+    .sprout::before { left: -12px; transform: rotate(-28deg); }
+    .sprout::after { right: -8px; transform: rotate(28deg); }
+    .sprout-left { left: 24px; }
+    .sprout-right { right: 26px; transform: scale(.78); }
+
+    .status-strip {
+      position: relative;
+      z-index: 2;
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .88);
+      color: var(--muted);
+      text-align: center;
+      font-size: .88rem;
+      line-height: 1.45;
+      font-weight: 780;
+    }
+
+    .status-strip span { color: #ef8e97; }
+
+    .section {
+      padding: 36px 28px;
+      background: #fff;
+    }
+
+    .section h2 {
+      margin-bottom: 24px;
+      color: var(--ink);
+      font-size: 1.28rem;
+      line-height: 1.45;
+      letter-spacing: 0;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .feature-card {
+      min-height: 118px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 82px;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 14px 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 10px 24px rgba(16, 40, 35, .06);
+    }
+
+    .feature-card h3 {
+      margin-bottom: 9px;
+      color: var(--green-strong);
+      font-size: .96rem;
+      line-height: 1.42;
+    }
+
+    .feature-card p {
+      margin-bottom: 0;
+      color: var(--ink-soft);
+      font-size: .82rem;
+      line-height: 1.65;
+      font-weight: 680;
+    }
+
+    .feature-card img {
+      width: 86px;
+      justify-self: end;
+      filter: drop-shadow(0 12px 14px rgba(16, 40, 35, .10));
+    }
+
+    .section-intro {
+      margin-bottom: 20px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      margin-bottom: 12px;
+      padding: 7px 11px;
+      border: 1px solid rgba(20, 131, 104, .12);
+      border-radius: 999px;
+      background: var(--mint);
+      color: var(--green-strong);
+      font-size: .74rem;
+      font-weight: 900;
+    }
+
+    .section-intro p {
+      margin-bottom: 0;
+      color: var(--ink-soft);
+      font-size: .86rem;
+      line-height: 1.68;
+      font-weight: 700;
+    }
+
+    .home-faq-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .home-faq-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 10px 24px rgba(16, 40, 35, .06);
+    }
+
+    .home-faq-card summary {
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 15px 16px;
+      color: var(--ink);
+      font-size: .9rem;
+      font-weight: 850;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .home-faq-card summary::-webkit-details-marker { display: none; }
+    .home-faq-card summary::after { content: "+"; color: var(--green); font-size: 1.1rem; }
+    .home-faq-card[open] summary::after { content: "-"; }
+
+    .home-faq-card p {
+      margin: -2px 16px 16px;
+      color: var(--ink-soft);
+      font-size: .84rem;
+      line-height: 1.64;
+      font-weight: 680;
+      transition: opacity .24s ease, transform .24s ease;
+    }
+
+    .home-faq-card:not([open]) p {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+
+    .quote {
+      padding: 34px 28px 34px;
+      background: #fffdf8;
+      color: var(--green-strong);
+      text-align: center;
+      font-size: 1.14rem;
+      line-height: 1.65;
+      font-weight: 900;
+    }
+
+    .download-section {
+      padding: 0 14px 14px;
+      background: #fffdf8;
+    }
+
+    .app-card {
+      margin-top: 14px;
+      min-height: 278px;
+      padding: 26px 24px 22px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(16, 40, 35, .08);
+    }
+
+    .app-head {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr);
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .app-head img {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+    }
+
+    .app-name {
+      margin-bottom: 3px;
+      font-size: 1.04rem;
+      font-weight: 950;
+    }
+
+    .app-desc {
+      margin-bottom: 0;
+      color: var(--ink-soft);
+      font-size: .9rem;
+      line-height: 1.48;
+      font-weight: 720;
+    }
+
+    .release-note {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: .84rem;
+      font-weight: 760;
+    }
+
+    .app-card .store-row {
+      margin-bottom: 0;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin: 18px 0 12px;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 760;
+    }
+
+    .footer-links a { text-decoration: underline; text-underline-offset: 3px; }
+
+    .copyright {
+      max-width: 170px;
+      margin-bottom: 0;
+      color: #99a6a0;
+      font-size: .75rem;
+      line-height: 1.55;
+      font-weight: 650;
+    }
+
+    .footer-mascot {
+      position: absolute;
+      right: 18px;
+      bottom: 4px;
+      width: 88px;
+      filter: drop-shadow(0 14px 16px rgba(16, 40, 35, .10));
+    }
+
+    @keyframes softFloat {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(0, -10px, 0); }
+    }
+
+    @media (min-width: 900px) {
+      body {
+        background:
+          radial-gradient(circle at 78% 11%, rgba(203, 239, 225, .52), transparent 220px),
+          #fbf8f1;
+      }
+
+      .mobile-shell {
+        width: min(calc(100% - 96px), var(--desktop-max));
+        padding: 22px 0 0;
+      }
+
+      .phone-page {
+        overflow: hidden;
+        border: 0;
+        border-radius: 0;
+        background: #fffef8;
+        box-shadow: none;
+      }
+
+      .hero {
+        min-height: clamp(610px, 70vh, 674px);
+        display: grid;
+        grid-template-columns: minmax(360px, .9fr) minmax(520px, 1.1fr);
+        grid-template-rows: auto 1fr;
+        column-gap: 38px;
+        padding: 0 40px 38px;
+        background:
+          radial-gradient(circle at 87% 47%, rgba(178, 236, 215, .68), transparent 224px),
+          radial-gradient(circle at 63% 22%, rgba(230, 246, 237, .72), transparent 150px),
+          linear-gradient(180deg, #fffef8 0%, #fffef8 73%, #eef9f2 100%);
+      }
+
+      .hero::before,
+      .hero::after {
+        display: none;
+      }
+
+      .topbar {
+        grid-column: 1 / -1;
+        min-height: 72px;
+        margin: 0 0 clamp(42px, 7vh, 72px);
+        padding: 0 34px;
+        border: 1px solid rgba(16, 40, 35, .09);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, .9);
+        box-shadow: 0 13px 30px rgba(16, 40, 35, .09);
+      }
+
+      .brand {
+        gap: 12px;
+        font-size: 1.42rem;
+      }
+
+      .brand img {
+        width: 46px;
+        height: 46px;
+        border-radius: 13px;
+      }
+
+      .menu {
+        display: none;
+      }
+
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 54px;
+        color: var(--ink-soft);
+        font-size: .98rem;
+        font-weight: 850;
+      }
+
+      .desktop-nav a {
+        position: relative;
+        padding: 27px 0 24px;
+        text-decoration: none;
+      }
+
+      .desktop-nav a[aria-current="page"] {
+        color: var(--green-strong);
+      }
+
+      .desktop-nav a[aria-current="page"]::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 17px;
+        width: 28px;
+        height: 3px;
+        border-radius: 999px;
+        background: var(--green);
+        transform: translateX(-50%);
+      }
+
+      .hero-copy-block {
+        grid-column: 1;
+        align-self: center;
+        max-width: 520px;
+        padding-left: 38px;
+      }
+
+      .desktop-only.hero-badge,
+      .hero-badge {
+        display: inline-flex;
+        margin-bottom: 24px;
+        padding: 9px 18px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .92);
+        box-shadow: 0 8px 19px rgba(16, 40, 35, .07);
+        color: var(--green-strong);
+        font-size: .94rem;
+        font-weight: 900;
+      }
+
+      h1 {
+        margin-bottom: 28px;
+        color: #13352f;
+        font-size: clamp(3.9rem, 5.2vw, 4.95rem);
+        line-height: 1.08;
+        font-weight: 950;
+      }
+
+      .hero-copy {
+        margin-bottom: 28px;
+        font-size: 1.24rem;
+        line-height: 1.62;
+      }
+
+      .store-row {
+        max-width: 416px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .store-link {
+        min-height: 58px;
+        border-radius: 10px;
+        font-size: 1.05rem;
+      }
+
+      .store-icon {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        font-size: .68rem;
+      }
+
+      .desktop-store-note {
+        display: block;
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: .98rem;
+        font-weight: 740;
+      }
+
+      .hero-mascot,
+      .sprout,
+      .status-strip,
+      .quote {
+        display: none;
+      }
+
+      .desktop-hero-art {
+        position: relative;
+        display: block;
+        grid-column: 2;
+        align-self: end;
+        min-height: 500px;
+      }
+
+      .desktop-hero-art img {
+        position: absolute;
+        right: 52px;
+        bottom: 0;
+        width: min(570px, 86%);
+        filter: drop-shadow(0 28px 32px rgba(16, 40, 35, .14));
+        animation: softFloat 7s ease-in-out infinite;
+      }
+
+      .section {
+        padding: 34px 40px;
+        background:
+          linear-gradient(90deg, rgba(237, 249, 241, .76), rgba(255, 255, 255, .92) 34%, rgba(237, 249, 241, .72));
+      }
+
+      #why-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+      }
+
+      .feature-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 26px;
+      }
+
+      .feature-card {
+        min-height: 292px;
+        display: block;
+        padding: 34px 32px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, .88);
+        box-shadow: 0 18px 44px rgba(16, 40, 35, .08);
+        transition: transform .26s ease, box-shadow .26s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 26px 58px rgba(16, 40, 35, .13);
+      }
+
+      .feature-number {
+        position: absolute;
+        top: 30px;
+        left: 28px;
+        width: 48px;
+        height: 48px;
+        display: inline-grid;
+        place-items: center;
+        border-radius: 999px;
+        background: var(--mint);
+        color: var(--green);
+        font-size: 1.05rem;
+        font-weight: 950;
+      }
+
+      .feature-card div {
+        padding-left: 72px;
+      }
+
+      .feature-card h3 {
+        margin-bottom: 14px;
+        color: var(--ink);
+        font-size: 1.38rem;
+        line-height: 1.32;
+      }
+
+      .feature-card p {
+        max-width: 230px;
+        font-size: .98rem;
+        line-height: 1.72;
+      }
+
+      .feature-card img {
+        position: absolute;
+        right: 26px;
+        bottom: -18px;
+        width: 146px;
+      }
+
+      .desktop-preview {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(320px, .76fr) minmax(540px, 1.24fr);
+        gap: 28px;
+        min-height: 620px;
+        padding: 84px 40px 58px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 79% 55%, rgba(176, 234, 215, .48), transparent 250px),
+          #fff;
+      }
+
+      .preview-copy {
+        align-self: center;
+        padding-left: 38px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        margin-bottom: 18px;
+        padding: 8px 15px;
+        border-radius: 999px;
+        background: var(--mint);
+        color: var(--green-strong);
+        font-size: .9rem;
+        font-weight: 900;
+      }
+
+      .preview-copy h2 {
+        margin-bottom: 20px;
+        color: #12352f;
+        font-size: 2.9rem;
+        line-height: 1.16;
+      }
+
+      .preview-copy p {
+        max-width: 440px;
+        color: var(--ink-soft);
+        font-size: 1.18rem;
+        line-height: 1.7;
+        font-weight: 720;
+      }
+
+      .preview-showcase {
+        position: relative;
+        min-height: 590px;
+        display: grid;
+        place-items: center;
+        align-self: center;
+        justify-self: stretch;
+      }
+
+      .preview-carousel {
+        position: relative;
+        align-self: center;
+        justify-self: center;
+        z-index: 2;
+        width: min(340px, 100%);
+        height: 560px;
+        --parallax-y: 0px;
+        transform: translate3d(0, var(--parallax-y), 0);
+        transition: transform .18s linear;
+      }
+
+      .real-use-card {
+        position: absolute;
+        z-index: 1;
+        margin: 0;
+        overflow: hidden;
+        border: 0;
+        border-radius: 20px;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .real-use-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .preview-label {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        z-index: 5;
+        margin: 0;
+        color: rgba(16, 40, 35, .48);
+        font-size: .74rem;
+        line-height: 1;
+        font-weight: 850;
+        white-space: nowrap;
+        text-shadow: 0 1px 14px rgba(255, 255, 255, .86);
+        transform: translateX(-50%);
+      }
+
+      .preview-label-widget {
+        top: 14px;
+        color: rgba(255, 255, 255, .82);
+        text-shadow: 0 1px 12px rgba(5, 20, 30, .68);
+      }
+
+      .real-use-card-notification {
+        top: 76px;
+        left: -42px;
+        width: 300px;
+        height: 280px;
+        transform: rotate(-3deg);
+      }
+
+      .real-use-card-widget {
+        right: -4px;
+        bottom: 2px;
+        z-index: 3;
+        width: 238px;
+        height: 380px;
+        transform: rotate(2deg);
+      }
+
+      .preview-track {
+        position: relative;
+        height: 100%;
+      }
+
+      .desktop-phone {
+        position: absolute;
+        inset: 0;
+        margin: 0;
+        overflow: hidden;
+        border: 0;
+        border-radius: 42px;
+        background: transparent;
+        box-shadow: 0 18px 42px rgba(16, 40, 35, .14);
+        opacity: 0;
+        pointer-events: none;
+        transform: translate3d(20px, 0, 0) scale(.96);
+        transition: opacity .48s ease, transform .48s ease, box-shadow .48s ease;
+      }
+
+      .preview-slide.is-active {
+        z-index: 2;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate3d(0, 0, 0) scale(1);
+        box-shadow: 0 24px 56px rgba(16, 40, 35, .18);
+      }
+
+      .preview-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+      }
+
+      .preview-controls {
+        position: absolute;
+        left: 50%;
+        bottom: -34px;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border: 1px solid rgba(16, 40, 35, .08);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .82);
+        box-shadow: 0 10px 24px rgba(16, 40, 35, .08);
+        transform: translateX(-50%);
+      }
+
+      .preview-control {
+        width: 9px;
+        height: 9px;
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: #dce7e1;
+        cursor: pointer;
+        transition: width .24s ease, background .24s ease;
+      }
+
+      .preview-control.is-active {
+        width: 26px;
+        background: var(--green);
+      }
+
+      .preview-control:focus-visible {
+        outline: 3px solid rgba(20, 131, 104, .22);
+        outline-offset: 3px;
+      }
+
+      .home-faq {
+        padding: 86px 78px;
+        display: grid;
+        grid-template-columns: 340px minmax(0, 1fr);
+        gap: 48px;
+        background: #fffef8;
+      }
+
+      .section-intro {
+        margin-bottom: 34px;
+      }
+
+      .home-faq .section-intro {
+        margin-bottom: 0;
+      }
+
+      .section-kicker {
+        margin-bottom: 16px;
+        padding: 8px 15px;
+        font-size: .9rem;
+      }
+
+      .section-intro h2 {
+        margin-bottom: 18px;
+        color: #12352f;
+        font-size: 2.72rem;
+        line-height: 1.18;
+      }
+
+      .section-intro p {
+        max-width: 530px;
+        font-size: 1.08rem;
+        line-height: 1.72;
+      }
+
+      .home-faq-list {
+        gap: 14px;
+      }
+
+      .home-faq-card {
+        border-radius: 16px;
+        box-shadow: 0 16px 38px rgba(16, 40, 35, .07);
+      }
+
+      .home-faq-card summary {
+        min-height: 64px;
+        padding: 18px 22px;
+        font-size: 1.02rem;
+      }
+
+      .home-faq-card p {
+        margin: -2px 22px 20px;
+        font-size: .94rem;
+      }
+
+      .final-cta {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(420px, 1fr) 320px;
+        align-items: center;
+        gap: 42px;
+        min-height: 310px;
+        padding: 58px 78px 54px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 88% 40%, rgba(176, 234, 215, .62), transparent 220px),
+          linear-gradient(90deg, #edf9f1, #fbfff9);
+      }
+
+      .final-cta-copy h2 {
+        margin-bottom: 16px;
+        color: #12352f;
+        font-size: 2.84rem;
+        line-height: 1.18;
+      }
+
+      .final-cta-copy p {
+        margin-bottom: 26px;
+        color: var(--ink-soft);
+        font-size: 1.16rem;
+        font-weight: 740;
+      }
+
+      .final-cta .store-row {
+        max-width: 430px;
+      }
+
+      .final-cta-note {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: .94rem;
+        font-weight: 720;
+      }
+
+      .final-cta-mascot {
+        justify-self: end;
+        width: 230px;
+        filter: drop-shadow(0 24px 30px rgba(16, 40, 35, .12));
+        animation: softFloat 7.4s ease-in-out infinite;
+      }
+
+      [data-animate] {
+        opacity: 0;
+        transform: translate3d(0, 22px, 0);
+        transition: opacity .58s ease, transform .58s ease;
+      }
+
+      [data-animate].is-visible {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+
+      .feature-card.is-visible:hover {
+        transform: translateY(-6px);
+      }
+
+      .download-section {
+        padding: 0;
+        background: #fff;
+      }
+
+      .app-card {
+        position: relative;
+        min-height: 132px;
+        display: grid;
+        grid-template-columns: minmax(260px, .8fr) 1fr 170px;
+        grid-template-rows: auto auto;
+        align-items: center;
+        gap: 24px;
+        margin-top: 0;
+        padding: 28px 42px 24px;
+        border: 0;
+        border-radius: 0;
+        background: #fffdf8;
+        box-shadow: none;
+      }
+
+      .app-head {
+        margin-bottom: 0;
+      }
+
+      .release-note {
+        display: none;
+      }
+
+      .app-card .store-row {
+        display: none;
+      }
+
+      .footer-links {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        grid-column: auto;
+        grid-row: auto;
+        justify-content: center;
+        margin: 0;
+        transform: translate(-50%, -50%);
+      }
+
+      .copyright {
+        grid-column: 1;
+        grid-row: 2;
+        align-self: end;
+      }
+
+      .footer-mascot {
+        right: 46px;
+        bottom: 12px;
+        width: 104px;
+      }
+
+      @media (max-width: 1180px) {
+        .home-faq {
+          grid-template-columns: 1fr;
+        }
+
+        .real-use-card {
+          display: none;
+        }
+      }
+
+      @media (max-height: 820px) {
+        .hero {
+          min-height: 604px;
+          padding-bottom: 28px;
+        }
+
+        .desktop-hero-art {
+          min-height: 432px;
+        }
+
+        .desktop-hero-art img {
+          width: min(500px, 82%);
+        }
+
+        h1 {
+          font-size: clamp(3.35rem, 4.6vw, 4.35rem);
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+
+      [data-animate] {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .mobile-shell { padding: 0; }
+      .phone-page { border-radius: 0; border-inline: 0; }
+    }
+  </style>
+</head>
+<body>
+  <svg class="store-icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-google-play" viewBox="0 0 24 24">
+      <path fill="#00A0FF" d="M4.2 3.05v17.9L13.1 12 4.2 3.05Z"></path>
+      <path fill="#00C853" d="M4.92 2.42 16.34 8.9 13.1 12 4.92 2.42Z"></path>
+      <path fill="#FFD54F" d="M13.1 12 16.34 15.1 4.92 21.58 13.1 12Z"></path>
+      <path fill="#FF5252" d="m16.34 8.9 3.82 2.17c.84.48.84 1.38 0 1.86l-3.82 2.17L13.1 12l3.24-3.1Z"></path>
+    </symbol>
+    <symbol id="icon-apple" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M16.45 12.72c-.03-2.25 1.84-3.35 1.93-3.4-1.06-1.55-2.71-1.77-3.28-1.79-1.38-.14-2.72.82-3.42.82-.72 0-1.8-.8-2.96-.78-1.51.02-2.92.88-3.69 2.24-1.58 2.74-.4 6.76 1.11 8.97.76 1.09 1.65 2.31 2.83 2.27 1.14-.05 1.57-.73 2.94-.73 1.36 0 1.75.73 2.95.71 1.24-.02 2.01-1.1 2.74-2.2.88-1.25 1.23-2.49 1.24-2.55-.03-.01-2.36-.9-2.39-3.56ZM14.2 6.06c.61-.76 1.03-1.78.91-2.82-.88.04-1.98.61-2.62 1.35-.57.66-1.08 1.73-.94 2.73.99.08 2.01-.5 2.65-1.26Z"></path>
+    </symbol>
+  </svg>
+  <main class="mobile-shell">
+    <article class="phone-page">
+      <section class="hero" aria-labelledby="home-title">
+        <header class="topbar">
+          <a class="brand" href="index.html" aria-label="했어? 홈">
+            <img src="assets/brand/app_icon_master.png" alt="" width="1024" height="1024">
+            <span>했어?</span>
+          </a>
+          <details class="menu">
+            <summary>
+              메뉴
+              <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+            </summary>
+            <nav class="menu-panel" aria-label="주요 페이지">
+              <a href="privacy.html">개인정보처리방침</a>
+              <a href="support.html">지원</a>
+            </nav>
+          </details>
+          <nav class="desktop-nav" aria-label="주요 페이지">
+            <a href="index.html" aria-current="page">홈</a>
+            <a href="privacy.html">개인정보</a>
+            <a href="support.html">지원</a>
+          </nav>
+        </header>
+
+        <div class="hero-copy-block">
+          <span class="hero-badge desktop-only">작은 질문이 만드는 좋은 하루 🍀</span>
+          <h1 id="home-title" aria-label="오늘, 나에게 했어?">
+            <span>오늘, 나에게</span>
+            <span>했어?</span>
+          </h1>
+          <p class="hero-copy">나를 성장시키는 작은 질문,<br>매일 알람으로 찾아와요</p>
+          <div class="store-row" aria-label="앱 다운로드">
+            <a class="store-link" data-store="google-play" aria-disabled="true" role="link">
+              <span class="store-icon store-icon-google" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><use href="#icon-google-play"></use></svg>
+              </span>
+              <span>Google Play</span>
+            </a>
+            <a class="store-link" data-store="app-store" aria-disabled="true" role="link">
+              <span class="store-icon store-icon-apple" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><use href="#icon-apple"></use></svg>
+              </span>
+              <span>App Store</span>
+            </a>
+          </div>
+        </div>
+        <div class="desktop-hero-art" aria-hidden="true">
+          <img src="assets/mascot/base/mint_question.png" alt="" width="1254" height="1254">
+        </div>
+        <img class="hero-mascot" src="assets/mascot/base/mint_done.png" alt="체크 표시를 든 했어? 마스코트" width="1254" height="1254">
+        <span class="sprout sprout-left" aria-hidden="true"></span>
+        <span class="sprout sprout-right" aria-hidden="true"></span>
+      </section>
+
+      <p class="status-strip"><span>♥</span> 곧 다운로드할 수 있는 체크인 알람 앱</p>
+
+      <section class="section" aria-labelledby="why-title">
+        <h2 id="why-title">왜 많은 사람들이 했어?를 선택할까요?</h2>
+        <div class="feature-list">
+          <article class="feature-card" data-animate>
+            <span class="feature-number" aria-hidden="true">01</span>
+            <div>
+              <h3>질문으로 하루를 시작해요</h3>
+              <p>원하는 질문을 정해진 시간에 받아 스스로를 돌아보세요</p>
+            </div>
+            <img src="assets/mascot/base/mint_question.png" alt="" width="1254" height="1254" loading="lazy">
+          </article>
+          <article class="feature-card" data-animate>
+            <span class="feature-number" aria-hidden="true">02</span>
+            <div>
+              <h3>간단한 답변으로 기록해요</h3>
+              <p>했어, 나중에, 패스로 오늘의 상태를 남기고 변화를 확인하세요</p>
+            </div>
+            <img src="assets/mascot/base/mint_later.png" alt="" width="1254" height="1254" loading="lazy">
+          </article>
+          <article class="feature-card" data-animate>
+            <span class="feature-number" aria-hidden="true">03</span>
+            <div>
+              <h3>나만의 루틴을 만들어가요</h3>
+              <p>작은 반복이 눈에 보이는 변화가 되도록 기록을 쌓아가요</p>
+            </div>
+            <img src="assets/mascot/base/mint_celebrate.png" alt="" width="1254" height="1254" loading="lazy">
+          </article>
+        </div>
+      </section>
+
+      <section class="desktop-preview" aria-labelledby="preview-title">
+        <div class="preview-copy">
+          <span class="eyebrow">앱 미리보기</span>
+          <h2 id="preview-title">가볍게,<br>더 강력하게</h2>
+          <p>질문 만들기부터 알림, 리듬 확인까지 했어?를 직접 만나보세요</p>
+        </div>
+        <div class="preview-showcase">
+          <figure class="real-use-card real-use-card-notification">
+            <figcaption class="preview-label">실제 시스템 알림창</figcaption>
+            <img src="assets/device_previews/notification_shade_current.png" alt="실기기 알림창에 표시된 했어? 체크인 알림" width="720" height="673" loading="lazy">
+          </figure>
+          <div class="preview-carousel" data-preview-carousel data-parallax-phone>
+            <p class="preview-label">실제 앱 화면</p>
+            <div class="preview-track">
+              <figure class="desktop-phone preview-slide is-active">
+                <img src="assets/device_previews/01_tutorial.png" alt="했어? 튜토리얼 화면" width="1080" height="2340">
+              </figure>
+              <figure class="desktop-phone preview-slide">
+                <img src="assets/device_previews/02_today.png" alt="했어? 오늘 체크인 화면" width="1080" height="2340" loading="lazy">
+              </figure>
+              <figure class="desktop-phone preview-slide">
+                <img src="assets/device_previews/03_create.png" alt="했어? 질문 만들기 화면" width="1080" height="2340" loading="lazy">
+              </figure>
+              <figure class="desktop-phone preview-slide">
+                <img src="assets/device_previews/04_check_in_detail.png" alt="했어? 체크인 상세 화면" width="1080" height="2340" loading="lazy">
+              </figure>
+              <figure class="desktop-phone preview-slide">
+                <img src="assets/device_previews/05_template_packs.png" alt="했어? 템플릿 팩 목록 화면" width="1080" height="2340" loading="lazy">
+              </figure>
+              <figure class="desktop-phone preview-slide">
+                <img src="assets/device_previews/06_template_pack_detail.png" alt="했어? 템플릿 팩 상세 화면" width="1080" height="2340" loading="lazy">
+              </figure>
+              <figure class="desktop-phone preview-slide">
+                <img src="assets/device_previews/07_history.png" alt="했어? 기록 화면" width="1080" height="2340" loading="lazy">
+              </figure>
+            </div>
+            <div class="preview-controls" aria-label="앱 미리보기 화면 선택">
+              <button class="preview-control is-active" type="button" data-preview-index="0" aria-label="튜토리얼 화면 보기" aria-current="true"></button>
+              <button class="preview-control" type="button" data-preview-index="1" aria-label="오늘 화면 보기"></button>
+              <button class="preview-control" type="button" data-preview-index="2" aria-label="만들기 화면 보기"></button>
+              <button class="preview-control" type="button" data-preview-index="3" aria-label="체크인 상세 화면 보기"></button>
+              <button class="preview-control" type="button" data-preview-index="4" aria-label="템플릿팩 화면 보기"></button>
+              <button class="preview-control" type="button" data-preview-index="5" aria-label="템플릿팩 상세 화면 보기"></button>
+              <button class="preview-control" type="button" data-preview-index="6" aria-label="기록 화면 보기"></button>
+            </div>
+          </div>
+          <figure class="real-use-card real-use-card-widget">
+            <figcaption class="preview-label preview-label-widget">실제 위젯 화면</figcaption>
+            <img src="assets/device_previews/home_widgets_current.png" alt="실기기 홈 화면에 배치된 했어? 위젯" width="720" height="1227" loading="lazy">
+          </figure>
+        </div>
+      </section>
+
+      <section class="section home-faq" aria-labelledby="home-faq-title">
+        <div class="section-intro">
+          <span class="section-kicker">지원 / 자주 묻는 질문</span>
+          <h2 id="home-faq-title">궁금한 점만 빠르게</h2>
+          <p>앱을 설치하기 전에 필요한 핵심 질문만 짧게 정리했습니다.</p>
+        </div>
+        <div class="home-faq-list">
+          <details class="home-faq-card" open data-animate>
+            <summary>했어?는 어떤 앱인가요?</summary>
+            <p>직접 만든 질문을 정해진 시간에 받고, 했어 / 나중에 / 패스로 답하는 체크인 알람 앱입니다.</p>
+          </details>
+          <details class="home-faq-card" data-animate>
+            <summary>알림이 오지 않으면 무엇을 확인하나요?</summary>
+            <p>기기 설정에서 했어?의 알림 권한이 켜져 있는지 확인해 주세요. 알림 권한이 꺼져 있으면 예약 알림이 표시되지 않을 수 있습니다.</p>
+          </details>
+          <details class="home-faq-card" data-animate>
+            <summary>체크인 데이터는 어디에 저장되나요?</summary>
+            <p>사용자가 만든 질문, 알림 시간, 답변 기록은 기기 내부 저장소에 저장됩니다.</p>
+          </details>
+          <details class="home-faq-card" data-animate>
+            <summary>개인정보처리방침은 어디서 보나요?</summary>
+            <p><a href="privacy.html">개인정보처리방침</a> 페이지에서 로컬 저장, 알림 권한, 결제 처리 안내를 확인할 수 있습니다.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="final-cta" aria-labelledby="final-cta-title" data-animate>
+        <div class="final-cta-copy">
+          <h2 id="final-cta-title">작은 질문이 당신의 하루를 바꿔요</h2>
+          <p>지금 바로 했어?를 시작해보세요</p>
+          <div class="store-row" aria-label="앱 다운로드">
+            <a class="store-link" data-store="google-play" aria-disabled="true" role="link">
+              <span class="store-icon store-icon-google" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><use href="#icon-google-play"></use></svg>
+              </span>
+              <span>Google Play</span>
+            </a>
+            <a class="store-link" data-store="app-store" aria-disabled="true" role="link">
+              <span class="store-icon store-icon-apple" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><use href="#icon-apple"></use></svg>
+              </span>
+              <span>App Store</span>
+            </a>
+          </div>
+        </div>
+        <img class="final-cta-mascot" src="assets/mascot/base/mint_done.png" alt="체크 표시를 든 했어? 마스코트" width="1254" height="1254" loading="lazy">
+      </section>
+
+      <section class="quote" aria-label="했어? 소개 문구">
+        “알람은 울리기만 합니다<br>했어?는 대답하게 만듭니다”
+      </section>
+
+      <section class="download-section" aria-label="앱 다운로드">
+        <footer class="app-card" id="app-download">
+          <div class="app-head">
+            <img src="assets/brand/app_icon_master.png" alt="" width="1024" height="1024" loading="lazy">
+            <div>
+              <p class="app-name">했어?</p>
+              <p class="app-desc">나를 성장시키는<br>체크인 알람 앱</p>
+            </div>
+          </div>
+          <div class="store-row" aria-label="앱 다운로드">
+            <a class="store-link" data-store="google-play" aria-disabled="true" role="link">
+              <span class="store-icon store-icon-google" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><use href="#icon-google-play"></use></svg>
+              </span>
+              <span>Google Play</span>
+            </a>
+            <a class="store-link" data-store="app-store" aria-disabled="true" role="link">
+              <span class="store-icon store-icon-apple" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><use href="#icon-apple"></use></svg>
+              </span>
+              <span>App Store</span>
+            </a>
+          </div>
+          <nav class="footer-links" aria-label="하단 링크">
+            <a href="privacy.html">개인정보처리방침</a>
+            <a href="support.html">지원</a>
+          </nav>
+          <p class="copyright">© 2026 did-you-check.<br>All rights reserved.</p>
+          <img class="footer-mascot" src="assets/mascot/base/mint_pass.png" alt="패스 표정을 한 했어? 마스코트" width="1254" height="1254" loading="lazy">
+        </footer>
+      </section>
+    </article>
+  </main>
+
+  <script>
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.querySelectorAll('.store-link[aria-disabled="true"]').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        document.querySelectorAll('[data-download-status]').forEach((status) => {
+          status.textContent = '아직 스토어 주소가 없습니다. 공개되면 이 버튼에 연결됩니다.';
+        });
+      });
+    });
+
+    const previewCarousel = document.querySelector('[data-preview-carousel]');
+    if (previewCarousel) {
+      const slides = Array.from(previewCarousel.querySelectorAll('.preview-slide'));
+      const controls = Array.from(previewCarousel.querySelectorAll('[data-preview-index]'));
+      let activePreviewIndex = 0;
+
+      const showPreview = (index) => {
+        if (!slides.length) return;
+        activePreviewIndex = (index + slides.length) % slides.length;
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.toggle('is-active', slideIndex === activePreviewIndex);
+        });
+        controls.forEach((control, controlIndex) => {
+          const isActive = controlIndex === activePreviewIndex;
+          control.classList.toggle('is-active', isActive);
+          if (isActive) {
+            control.setAttribute('aria-current', 'true');
+          } else {
+            control.removeAttribute('aria-current');
+          }
+        });
+      };
+
+      controls.forEach((control) => {
+        control.addEventListener('click', () => {
+          const nextIndex = Number(control.dataset.previewIndex);
+          showPreview(Number.isNaN(nextIndex) ? 0 : nextIndex);
+        });
+      });
+
+      if (!reduceMotion && slides.length > 1) {
+        window.setInterval(() => showPreview(activePreviewIndex + 1), 3600);
+      }
+    }
+
+    if (!reduceMotion) {
+      const animatedItems = document.querySelectorAll('[data-animate]');
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px 5% 0px' });
+
+      animatedItems.forEach((item) => revealObserver.observe(item));
+
+      const parallaxPhones = document.querySelectorAll('[data-parallax-phone]');
+      let ticking = false;
+
+      const updateParallax = () => {
+        const viewportCenter = window.innerHeight / 2;
+        parallaxPhones.forEach((phone, index) => {
+          const rect = phone.getBoundingClientRect();
+          const elementCenter = rect.top + rect.height / 2;
+          const distance = Math.max(-1, Math.min(1, (viewportCenter - elementCenter) / window.innerHeight));
+          const depth = phone.hasAttribute('data-preview-carousel') || index === 1 ? 10 : 16;
+          phone.style.setProperty('--parallax-y', `${(distance * depth).toFixed(2)}px`);
+        });
+        ticking = false;
+      };
+
+      const requestParallax = () => {
+        if (!ticking) {
+          window.requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      };
+
+      updateParallax();
+      window.addEventListener('scroll', requestParallax, { passive: true });
+      window.addEventListener('resize', requestParallax);
+    } else {
+      document.querySelectorAll('[data-animate]').forEach((item) => item.classList.add('is-visible'));
+    }
+  </script>
+</body>
+</html>
