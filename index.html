@@ -872,7 +872,7 @@
 
       .preview-showcase {
         position: relative;
-        min-height: 682px;
+        min-height: 590px;
         display: grid;
         place-items: center;
         align-self: center;
@@ -884,15 +884,12 @@
         align-self: center;
         justify-self: center;
         z-index: 2;
-        width: min(306px, 100%);
-        height: 682px;
-        --parallax-y: 0px;
-        --screen-left: 5.367%;
-        --screen-top: 2.57%;
-        --screen-width: 88.551%;
-        --screen-height: 93.494%;
-        transform: translate3d(0, var(--parallax-y), 0);
-        transition: transform .18s linear;
+        width: min(292px, 100%);
+        aspect-ratio: 559 / 1245;
+        --screen-left: 4.55%;
+        --screen-top: 2.55%;
+        --screen-width: 90.9%;
+        --screen-height: 93.55%;
       }
 
       .real-use-card {
@@ -925,12 +922,12 @@
       }
 
       .real-use-card-widget {
-        right: 14px;
-        bottom: 12px;
+        right: 10px;
+        bottom: 70px;
         z-index: 1;
-        width: 248px;
-        height: 396px;
-        transform: rotate(5.5deg);
+        width: 238px;
+        height: 410px;
+        transform: rotate(5deg);
       }
 
       .real-use-card-widget img {
@@ -938,30 +935,32 @@
       }
 
       .preview-track {
-        position: relative;
-        height: 100%;
+        position: absolute;
+        inset: 0;
       }
 
       .desktop-phone {
-        position: absolute;
-        inset: 0;
+        position: relative;
+        width: 100%;
+        height: 100%;
         margin: 0;
         overflow: visible;
         border: 0;
         border-radius: 0;
         background: transparent;
         box-shadow: none;
+      }
+
+      .preview-slide {
         opacity: 0;
         pointer-events: none;
-        transform: translate3d(20px, 0, 0) scale(.96);
-        transition: opacity .48s ease, transform .48s ease;
+        transition: opacity .52s ease;
       }
 
       .preview-slide.is-active {
         z-index: 2;
         opacity: 1;
         pointer-events: auto;
-        transform: translate3d(0, 0, 0) scale(1);
       }
 
       .phone-screen {
@@ -972,32 +971,31 @@
         width: var(--screen-width);
         height: var(--screen-height);
         border-radius: 28px;
-        box-shadow: 0 18px 48px rgba(16, 40, 35, .16);
+        background: #f7faf5;
+        object-fit: contain;
+        object-position: top center;
       }
 
       .phone-frame {
         position: absolute;
-        inset: 0;
+        left: 0;
+        top: 0;
         z-index: 2;
         width: 100%;
-        height: 100%;
+        height: 95%;
+        object-fit: fill;
         pointer-events: none;
-      }
-
-      .preview-slide img {
-        object-fit: cover;
-        object-position: top center;
       }
 
       .preview-controls {
         position: absolute;
         left: 50%;
-        bottom: -34px;
+        bottom: -21px;
         z-index: 3;
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 10px;
+        gap: 10px;
+        padding: 10px 14px;
         border: 1px solid rgba(16, 40, 35, .08);
         border-radius: 999px;
         background: rgba(255, 255, 255, .82);
@@ -1006,18 +1004,31 @@
       }
 
       .preview-control {
-        width: 9px;
-        height: 9px;
+        position: relative;
+        width: 18px;
+        height: 18px;
         padding: 0;
         border: 0;
         border-radius: 999px;
-        background: #dce7e1;
+        background: transparent;
         cursor: pointer;
-        transition: width .24s ease, background .24s ease;
+        transition: width .24s ease;
+      }
+
+      .preview-control::before {
+        content: "";
+        position: absolute;
+        inset: 3px;
+        border-radius: 999px;
+        background: #dce7e1;
+        transition: background .24s ease;
       }
 
       .preview-control.is-active {
-        width: 26px;
+        width: 40px;
+      }
+
+      .preview-control.is-active::before {
         background: var(--green);
       }
 
@@ -1355,43 +1366,25 @@
         <div class="preview-copy">
           <span class="eyebrow">앱 미리보기</span>
           <h2 id="preview-title">가볍게,<br>더 강력하게</h2>
-          <p>질문 만들기부터 알림, 오늘 체크인까지 했어?를 직접 만나보세요</p>
+          <p>질문 만들기부터 알림, 오늘 체크인까지<br>했어?를 직접 만나보세요</p>
         </div>
         <div class="preview-showcase">
           <figure class="real-use-card real-use-card-notification">
             <img src="assets/device_previews/notification_shade_current.png" alt="실기기 알림창에 표시된 했어? 체크인 알림" width="720" height="673" loading="lazy">
           </figure>
-          <div class="preview-carousel" data-preview-carousel data-parallax-phone>
-            <div class="preview-track">
-              <figure class="desktop-phone preview-slide is-active">
-                <img class="phone-screen" src="assets/device_previews/01_tutorial.png" alt="했어? 튜토리얼 화면" width="1080" height="2340">
-                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" aria-hidden="true">
-              </figure>
-              <figure class="desktop-phone preview-slide">
-                <img class="phone-screen" src="assets/device_previews/02_today.png" alt="했어? 오늘 체크인 화면" width="1080" height="2340" loading="lazy">
-                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
-              </figure>
-              <figure class="desktop-phone preview-slide">
-                <img class="phone-screen" src="assets/device_previews/03_create.png" alt="했어? 질문 만들기 화면" width="1080" height="2340" loading="lazy">
-                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
-              </figure>
-              <figure class="desktop-phone preview-slide">
-                <img class="phone-screen" src="assets/device_previews/04_check_in_detail.png" alt="했어? 체크인 상세 화면" width="1080" height="2340" loading="lazy">
-                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
-              </figure>
-              <figure class="desktop-phone preview-slide">
-                <img class="phone-screen" src="assets/device_previews/05_template_packs.png" alt="했어? 템플릿 팩 목록 화면" width="1080" height="2340" loading="lazy">
-                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
-              </figure>
-              <figure class="desktop-phone preview-slide">
-                <img class="phone-screen" src="assets/device_previews/06_template_pack_detail.png" alt="했어? 템플릿 팩 상세 화면" width="1080" height="2340" loading="lazy">
-                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
-              </figure>
-              <figure class="desktop-phone preview-slide">
-                <img class="phone-screen" src="assets/device_previews/07_history.png" alt="했어? 기록 화면" width="1080" height="2340" loading="lazy">
-                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
-              </figure>
-            </div>
+          <div class="preview-carousel" data-preview-carousel>
+            <figure class="desktop-phone">
+              <div class="preview-track">
+                <img class="phone-screen preview-slide is-active" src="assets/device_previews/01_tutorial.png" alt="했어? 튜토리얼 화면" width="1080" height="2340">
+                <img class="phone-screen preview-slide" src="assets/device_previews/02_today.png" alt="했어? 오늘 체크인 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen preview-slide" src="assets/device_previews/03_create.png" alt="했어? 질문 만들기 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen preview-slide" src="assets/device_previews/04_check_in_detail.png" alt="했어? 체크인 상세 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen preview-slide" src="assets/device_previews/05_template_packs.png" alt="했어? 템플릿 팩 목록 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen preview-slide" src="assets/device_previews/06_template_pack_detail.png" alt="했어? 템플릿 팩 상세 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen preview-slide" src="assets/device_previews/07_history.png" alt="했어? 기록 화면" width="1080" height="2340" loading="lazy">
+              </div>
+              <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" aria-hidden="true">
+            </figure>
             <div class="preview-controls" aria-label="앱 미리보기 화면 선택">
               <button class="preview-control is-active" type="button" data-preview-index="0" aria-label="튜토리얼 화면 보기" aria-current="true"></button>
               <button class="preview-control" type="button" data-preview-index="1" aria-label="오늘 화면 보기"></button>
@@ -1553,32 +1546,6 @@
       }, { threshold: 0.08, rootMargin: '0px 0px 5% 0px' });
 
       animatedItems.forEach((item) => revealObserver.observe(item));
-
-      const parallaxPhones = document.querySelectorAll('[data-parallax-phone]');
-      let ticking = false;
-
-      const updateParallax = () => {
-        const viewportCenter = window.innerHeight / 2;
-        parallaxPhones.forEach((phone, index) => {
-          const rect = phone.getBoundingClientRect();
-          const elementCenter = rect.top + rect.height / 2;
-          const distance = Math.max(-1, Math.min(1, (viewportCenter - elementCenter) / window.innerHeight));
-          const depth = phone.hasAttribute('data-preview-carousel') || index === 1 ? 10 : 16;
-          phone.style.setProperty('--parallax-y', `${(distance * depth).toFixed(2)}px`);
-        });
-        ticking = false;
-      };
-
-      const requestParallax = () => {
-        if (!ticking) {
-          window.requestAnimationFrame(updateParallax);
-          ticking = true;
-        }
-      };
-
-      updateParallax();
-      window.addEventListener('scroll', requestParallax, { passive: true });
-      window.addEventListener('resize', requestParallax);
     } else {
       document.querySelectorAll('[data-animate]').forEach((item) => item.classList.add('is-visible'));
     }
