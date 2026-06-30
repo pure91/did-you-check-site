@@ -8,8 +8,11 @@
   <meta property="og:title" content="했어? | 체크인 알람 앱">
   <meta property="og:description" content="작은 질문이 하루를 바꾸도록 돕는 체크인 알람 앱, 했어?를 만나보세요.">
   <meta name="theme-color" content="#edf9f1">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/brand/web-icon-192.png">
+  <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/brand/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/brand/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/brand/android-chrome-192x192.png">
   <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
   <style>
@@ -539,7 +542,7 @@
       display: flex;
       justify-content: center;
       gap: 18px;
-      margin: 22px 0 12px;
+      margin: 14px 0 20px;
       color: var(--muted);
       font-size: .78rem;
       font-weight: 760;
@@ -881,9 +884,13 @@
         align-self: center;
         justify-self: center;
         z-index: 2;
-        width: min(340px, 100%);
-        height: 560px;
+        width: min(265px, 100%);
+        height: 590px;
         --parallax-y: 0px;
+        --screen-left: 5.367%;
+        --screen-top: 2.57%;
+        --screen-width: 88.551%;
+        --screen-height: 93.494%;
         transform: translate3d(0, var(--parallax-y), 0);
         transition: transform .18s linear;
       }
@@ -909,8 +916,12 @@
         top: 76px;
         left: -42px;
         width: 300px;
-        height: 280px;
+        height: 205px;
         transform: rotate(-3deg);
+      }
+
+      .real-use-card-notification img {
+        object-position: bottom center;
       }
 
       .real-use-card-widget {
@@ -935,15 +946,15 @@
         position: absolute;
         inset: 0;
         margin: 0;
-        overflow: hidden;
+        overflow: visible;
         border: 0;
-        border-radius: 42px;
+        border-radius: 0;
         background: transparent;
-        box-shadow: 0 18px 42px rgba(16, 40, 35, .14);
+        box-shadow: none;
         opacity: 0;
         pointer-events: none;
         transform: translate3d(20px, 0, 0) scale(.96);
-        transition: opacity .48s ease, transform .48s ease, box-shadow .48s ease;
+        transition: opacity .48s ease, transform .48s ease;
       }
 
       .preview-slide.is-active {
@@ -951,12 +962,29 @@
         opacity: 1;
         pointer-events: auto;
         transform: translate3d(0, 0, 0) scale(1);
-        box-shadow: 0 24px 56px rgba(16, 40, 35, .18);
+      }
+
+      .phone-screen {
+        position: absolute;
+        left: var(--screen-left);
+        top: var(--screen-top);
+        z-index: 1;
+        width: var(--screen-width);
+        height: var(--screen-height);
+        border-radius: 28px;
+        box-shadow: 0 18px 48px rgba(16, 40, 35, .16);
+      }
+
+      .phone-frame {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
       }
 
       .preview-slide img {
-        width: 100%;
-        height: 100%;
         object-fit: cover;
         object-position: top center;
       }
@@ -1336,25 +1364,32 @@
           <div class="preview-carousel" data-preview-carousel data-parallax-phone>
             <div class="preview-track">
               <figure class="desktop-phone preview-slide is-active">
-                <img src="assets/device_previews/01_tutorial.png" alt="했어? 튜토리얼 화면" width="1080" height="2340">
+                <img class="phone-screen" src="assets/device_previews/01_tutorial.png" alt="했어? 튜토리얼 화면" width="1080" height="2340">
+                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" aria-hidden="true">
               </figure>
               <figure class="desktop-phone preview-slide">
-                <img src="assets/device_previews/02_today.png" alt="했어? 오늘 체크인 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen" src="assets/device_previews/02_today.png" alt="했어? 오늘 체크인 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
               </figure>
               <figure class="desktop-phone preview-slide">
-                <img src="assets/device_previews/03_create.png" alt="했어? 질문 만들기 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen" src="assets/device_previews/03_create.png" alt="했어? 질문 만들기 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
               </figure>
               <figure class="desktop-phone preview-slide">
-                <img src="assets/device_previews/04_check_in_detail.png" alt="했어? 체크인 상세 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen" src="assets/device_previews/04_check_in_detail.png" alt="했어? 체크인 상세 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
               </figure>
               <figure class="desktop-phone preview-slide">
-                <img src="assets/device_previews/05_template_packs.png" alt="했어? 템플릿 팩 목록 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen" src="assets/device_previews/05_template_packs.png" alt="했어? 템플릿 팩 목록 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
               </figure>
               <figure class="desktop-phone preview-slide">
-                <img src="assets/device_previews/06_template_pack_detail.png" alt="했어? 템플릿 팩 상세 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen" src="assets/device_previews/06_template_pack_detail.png" alt="했어? 템플릿 팩 상세 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
               </figure>
               <figure class="desktop-phone preview-slide">
-                <img src="assets/device_previews/07_history.png" alt="했어? 기록 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-screen" src="assets/device_previews/07_history.png" alt="했어? 기록 화면" width="1080" height="2340" loading="lazy">
+                <img class="phone-frame" src="assets/device_previews/phone_front_frame.png" alt="" width="559" height="1245" loading="lazy" aria-hidden="true">
               </figure>
             </div>
             <div class="preview-controls" aria-label="앱 미리보기 화면 선택">
